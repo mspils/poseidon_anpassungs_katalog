@@ -34,6 +34,14 @@ ALLOWED_HOSTS = [
     if h.strip()
 ]
 
+# TODO don't hardcode this anymore
+CSRF_TRUSTED_ORIGINS = [
+    "https://poseidonanpassungskatalog-production.up.railway.app",
+    "https://app.poseidon-klimaanpassung.de",
+]
+
+# TODO this line?
+# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Application definition
 
@@ -104,11 +112,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-LANGUAGE_CODE = "da"
+LANGUAGE_CODE = "de"
 LANGUAGES = [
     ("da", "Dansk"),
     ("de", "Deutsch"),
-    ("en", "English"),
+    # ("en", "English"),
 ]
 LOCALE_PATHS = [BASE_DIR / "locale"]
 TIME_ZONE = "UTC"

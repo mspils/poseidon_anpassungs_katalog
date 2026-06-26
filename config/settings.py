@@ -28,11 +28,12 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = env_bool("DEBUG", True)
 
+# TODO don't hardcode this anymore
 ALLOWED_HOSTS = [
     h.strip()
     for h in os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
     if h.strip()
-]
+] + ["app.poseidon-klimaanpassung.de"]
 
 # TODO don't hardcode this anymore
 CSRF_TRUSTED_ORIGINS = [

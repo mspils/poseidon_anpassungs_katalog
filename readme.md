@@ -2,6 +2,13 @@ Code and data for the collection of climate adaption measures from the Poseidon 
 
 This is a very early version, text still contain errors.
 
+
+To run locally:
+- Clone repo
+- Install uv if not installed
+- run `uv sync`
+- run `uv run python manage.py runserver`
+
 Some technical notes:
 
 Re-running translations after edits: whenever you add/change a {% trans %} string, run

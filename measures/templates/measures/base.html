@@ -1,0 +1,48 @@
+{% load static i18n %}
+{% get_current_language as CURRENT_LANG %}
+<!DOCTYPE html>
+<html lang="{{ CURRENT_LANG }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ensure a Referer is sent with tile requests; OSM rejects empty-referer requests. -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="icon" type="image/png" href="{% static 'measures/img/poseidon-trident.png' %}">
+  <title>{% block title %}{% trans "Climate Adaptation Measures" %}{% endblock %}</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="{% static 'measures/catalogue.css' %}?v=6">
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-brand">
+      <a href="{% url 'measures:map' %}" class="site-title" aria-label="{% trans 'Climate Adaptation Measures' %}">
+        <img src="{% static 'measures/img/poseidon-logo.svg' %}" alt="POSEIDON" class="site-logo">
+      </a>
+      <span class="site-subtitle">{% trans "Inspiration catalogue of climate adaptation measures" %}</span>
+    </div>
+    <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
+      {% csrf_token %}
+      <input name="next" type="hidden" value="{{ request.get_full_path }}">
+      <label class="visually-hidden" for="lang-select">{% trans "Language" %}</label>
+      <select id="lang-select" name="language" onchange="this.form.submit()">
+        {% get_available_languages as LANGUAGES %}
+        {% for code, name in LANGUAGES %}
+          <option value="{{ code }}"{% if code == CURRENT_LANG %} selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+    </form>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <img src="{% static 'measures/img/Interreg_Logo_Deutschland_Danmark_CMYK_negativ.png' %}"
+         alt="Interreg Deutschland–Danmark — Co-funded by the European Union" class="footer-logo">
+  </footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

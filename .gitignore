@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Django
+db.sqlite3
+/media/
+/staticfiles/
+
+# Env
+.env
+
+# Editor
+.vscode/
+.idea/
+measures/static/measures/fonts/ABCDiatypeRounded-Regular.woff2

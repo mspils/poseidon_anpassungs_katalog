@@ -1,0 +1,55 @@
+{% extends "measures/base.html" %}
+{% load static i18n l10n %}
+
+{% block title %}{{ measure.title }} — {% trans "Climate Adaptation Measures" %}{% endblock %}
+
+{% block content %}
+<article class="detail">
+  <a href="{% url 'measures:map' %}" class="back-link">&larr; {% trans "Back to map" %}</a>
+  <h1>{{ measure.title }}</h1>
+
+  <div class="tag-list">
+    {% for tag in measure.tags.all %}
+      <a class="tag-chip-static" href="{% url 'measures:map' %}?tags={{ tag.slug }}"
+         {% if tag.color %}style="border-color:{{ tag.color }};"{% endif %}>{{ tag.name }}</a>
+    {% endfor %}
+  </div>
+
+  {% if measure.summary %}
+    <p class="detail-goal"><span class="eyebrow">{% trans "Goal" %}</span>{{ measure.summary }}</p>
+  {% endif %}
+
+  <div class="detail-body">
+    <div class="detail-text">
+      {{ measure.description|linebreaks }}
+    </div>
+    <div id="detail-map" data-lat="{{ measure.lat|unlocalize }}" data-lng="{{ measure.lng|unlocalize }}"></div>
+  </div>
+
+  {% if measure.pictures.all %}
+  <h2>{% trans "Pictures" %}</h2>
+  <div class="gallery">
+    {% for pic in measure.pictures.all %}
+      <figure>
+        <img src="{{ pic.image.url }}" alt="{{ pic.caption }}">
+        {% if pic.caption %}<figcaption>{{ pic.caption }}</figcaption>{% endif %}
+      </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+</article>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var el = document.getElementById("detail-map");
+    var lat = parseFloat(el.dataset.lat), lng = parseFloat(el.dataset.lng);
+    var map = L.map(el).setView([lat, lng], 13);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+    }).addTo(map);
+    L.marker([lat, lng]).addTo(map);
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "measures/base.html" %}
+{% load static i18n %}
+
+{% block content %}
+<section class="filters" aria-label="{% trans 'Filter' %}">
+  {% for group in tag_groups %}
+    <div class="filter-group">
+      <strong class="filter-group__label">{{ group.label }}</strong>
+      <div class="filters-row">
+        {% for tag in group.tags %}
+          <label class="tag-chip">
+            <input type="checkbox" class="tag-filter" value="{{ tag.slug }}" data-category="{{ group.category }}">
+            <span class="{% if tag.num_measures == 0 %}is-unused{% endif %}"
+                  {% if tag.color and tag.num_measures %}style="border-color:{{ tag.color }};"{% endif %}>{{ tag.name }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+  {% empty %}
+    <span class="muted">{% trans "No tags yet — add some in the admin." %}</span>
+  {% endfor %}
+  <div class="filters-row">
+    <button type="button" id="clear-filters" class="link-btn">{% trans "Clear" %}</button>
+    <span class="muted" id="result-count" data-label="{% trans 'measures' %}"></span>
+  </div>
+</section>
+
+<div class="layout">
+  <div class="map-col">
+    <div id="map"></div>
+    <div id="map-legend" class="map-legend" aria-hidden="true"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="measure-table">
+      <thead>
+        <tr><th>{% trans "Title" %}</th><th>{% trans "Tags" %}</th><th>{% trans "Summary" %}</th></tr>
+      </thead>
+      <tbody><!-- rows injected by catalogue.js --></tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script id="measures-data" type="application/json">{{ measures_json|safe }}</script>
+<script src="{% static 'measures/catalogue.js' %}"></script>
+{% endblock %}

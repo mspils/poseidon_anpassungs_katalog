@@ -1,0 +1,17 @@
+[Unit]
+Description=Poseidon Anpassungskatalog (gunicorn)
+After=network.target
+
+[Service]
+User=rooty
+Group=www-data
+WorkingDirectory=/home/rooty/poseidon_anpassungs_katalog
+# uv reads the .env via django-dotenv (load_dotenv in config/settings.py).
+ExecStart=/home/rooty/.local/bin/uv run gunicorn config.wsgi:application \
+    --bind 127.0.0.1:8000 \
+    --workers 3
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

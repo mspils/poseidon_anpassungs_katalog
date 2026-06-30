@@ -28,21 +28,31 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = env_bool("DEBUG", True)
 
-# TODO don't hardcode this anymore
 ALLOWED_HOSTS = [
     h.strip()
     for h in os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
     if h.strip()
-] + ["app.poseidon-klimaanpassung.de"]
-
-# TODO don't hardcode this anymore
-CSRF_TRUSTED_ORIGINS = [
-    "https://poseidonanpassungskatalog-production.up.railway.app",
-    "https://app.poseidon-klimaanpassung.de",
 ]
 
-# TODO this line?
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# Comma-separated origins (with scheme), e.g. https://app.example.de
+CSRF_TRUSTED_ORIGINS = [
+    o.strip()
+    for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if o.strip()
+]
+
+# We run behind nginx, which terminates TLS and forwards the original scheme.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# HTTPS hardening. Enable (HTTPS=True) only once TLS is in front, otherwise
+# plain-HTTP access by IP would hit an endless redirect.
+if env_bool("HTTPS", False):
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # Application definition
 

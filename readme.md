@@ -9,6 +9,9 @@ To run locally:
 - run `uv sync`
 - run `uv run python manage.py runserver`
 
+For production deployment (Ubuntu VM with nginx + gunicorn), see
+[deploy/README.md](deploy/README.md).
+
 Some technical notes:
 
 Re-running translations after edits: whenever you add/change a {% trans %} string, run

@@ -151,8 +151,9 @@ STORAGES = {
     },
 }
 
-# Uploaded pictures.
+# Uploaded pictures. Defaults to a local dir; in production point MEDIA_ROOT at a
+# path outside the home dir (e.g. /var/www/poseidon/media) so nginx can serve it.
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = Path(os.environ.get("MEDIA_ROOT", BASE_DIR / "media"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

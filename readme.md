@@ -1,6 +1,9 @@
 Code and data for the collection of climate adaption measures from the Poseidon project.
 
 This is a very early version, text still contain errors.
+TODO:
+-# HTTPS=True   <- leave commented until certbot is done (Phase 2) in .env
+- Ip adresse aus allowed hosts nehmen
 
 
 To run locally:
